@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Save the first argument in a variable
+dir_path="/$1"
+
+# Check if the variable is empty
+if [ -z "$dir_path" ]; then
+  echo "Usage: $0 <directory_path>"
+  exit 1
+fi
+
+# Print the directory path to confirm
+#echo "Directory path: $dir_path"
+
+
+
+
+########## FOR CREATING A SOFTLINK BETWEEN FILES F1,F2,F3 IN IN APP/TEST-PMD  AND CC_PMD ALONG WITH  JUST COPYING FILES F4,F5,F6 IN DRIVERS/NET/CC_PMD ###############
+<<comment
+
+cp -r CC_PMD/ "$dir_path/drivers/net/" 
+mv  "$dir_path"/drivers/net/CC_PMD/f1.txt  "$dir_path"/drivers/net/CC_PMD/f2.txt  "$dir_path"/drivers/net/CC_PMD/f3.txt  "$dir_path/app/test-pmd/"
+
+#cd CC_PMD/
+
+ln -sf  "$(pwd)/CC_PMD/f1.txt"    "$dir_path/app/test-pmd/f1.txt"
+ln -sf  "$(pwd)/CC_PMD/f2.txt"    "$dir_path/app/test-pmd/f2.txt"
+ln -sf  "$(pwd)/CC_PMD/f3.txt"    "$dir_path/app/test-pmd/f3.txt"
+comment
+
+###########################################################################################
+
+
+
+########## FOR CREATING A SOFTLINK BETWEEN FILES F4,F5,F6 IN DRIVERS/NET/CC_PMD  AND CC_PMD  ALONG WITH JUST COPYING FILES IN APP/TEST-PMD   ###############
+
+<<comment
+mv  CC_PMD/f1.txt  CC_PMD/f2.txt  CC_PMD/f3.txt  "$dir_path/app/test-pmd/"
+
+cd CC_PMD/
+
+ln -s $(pwd) "$dir_path/drivers/net/CC_PMD"
+comment
+
+
+
+###########################################################################################
+
+
+#<<comment
+
+cp -r CC_PMD/ "$dir_path/drivers/net/" 
+mv  "$dir_path"/drivers/net/CC_PMD/f1.txt  "$dir_path"/drivers/net/CC_PMD/f2.txt  "$dir_path"/drivers/net/CC_PMD/f3.txt  "$dir_path/app/test-pmd/"
+
+#cd CC_PMD/
+sleep 5
+#ln -s $(pwd) "$dir_path/drivers/net/CC_PMD"
+
+ln -sf  "$(pwd)/CC_PMD/f4.txt"    "$dir_path/drivers/net/CC_PMD/f4.txt"
+ln -sf  "$(pwd)/CC_PMD/f5.txt"    "$dir_path/drivers/net/CC_PMD/f5.txt"
+ln -sf  "$(pwd)/CC_PMD/f6.txt"    "$dir_path/drivers/net/CC_PMD/f6.txt"
+
+
+#comment
+
+###########################################################################################
+
+
+
+# Print the current directory to confirm the change
+#pwd
+
+
+
+#cp -r CC_PMD/ "$dir_path/drivers/net/" 
+
+# Change to the provided directory
+# #cd "$dir_path" || { echo "Directory not found: $dir_path"; exit 1; }
+
