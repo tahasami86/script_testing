@@ -1,0 +1,67 @@
+sudo gdb ./build/app/dpdk-testpmd 
+
+run -l 0-10 -n 4  -a 0000:81:00.0 --file-prefix ts --iova-mode va -- -i --txq=4 --rxq=4 
+
+
+
+
+
+
+DEvice start flow 
+
+(start_port) ->  eth_dev_configure_mp() ->  rte_eth_dev_configure()  ->  rte_eth_dev_info_get  ->  
+	|
+	|
+	| -> -> -> -> rte_eth_dev_start
+
+
+
+
+
+Rx_burst api   eth_rx_burst_t mlx5_select_rx_function() ->  .rx_burst_mode_get = mlx5_rx_burst_mode_get,  mlx5_rx_queue_stop()  mlx5_select_rx_function()
+
+mlx5_rx_burst_mode_get()  ->  mlx5_rx_burst() || mlx5_rx_burst_mprq || 
+
+
+rte_eth_rx_burst ->>>>> imp
+
+
+
+mlx5_select_rx_function -> mlx5_dev_start  ->  mlx5_mp_os_req_start_rxtx -> rte_eth_dev_start -> eth_dev_start_mp -> start_port  -> main
+
+
+
+
+
+
+
+TX_Burst_FLOW
+
+mlx5_tx_burst_mode_get -> mlx5_tx_burst -> mlx5_tx_burst_single_send
+
+
+
+mlx5_tx_packet_multi_tso
+
+mlx5_tx_burst_mseg
+
+mlx5_tx_burst_tmpl
+
+mlx5_doorbell_ring
+
+
+#0  mlx5_doorbell_ring ) at ../drivers/common/mlx5/mlx5_common.h:358
+#1  mlx5_tx_burst_tmpl  ../drivers/net/mlx5/mlx5_tx.h:3666
+#2  mlx5_tx_burst_none_empw  at ../drivers/net/mlx5/mlx5_tx_empw.c:12
+#3  rte_eth_tx_burst ) at ../lib/ethdev/rte_ethdev.h:6248
+#4  in pkt_burst_transmit (fs=0x15cab9640) at ../app/test-pmd/txonly.c:397
+#5  run_pkt_fwd_on_lcore (fc=0x7ffff49a3240, pkt_fwd=0x685198 <pkt_burst_transmit>)  at ../app/test-pmd/testpmd.c:2268
+#6  run_one_txonly_burst_on_core (fwd_arg=0x17cf68080) at ../app/test-pmd/testpmd.c:2312
+#7  eal_thread_loop (arg=0x1) at ../lib/eal/common/eal_common_thread.c:211
+#8  start_thread () from /lib64/libpthread.so.0
+#9  clone () from /lib64/libc.so.6
+
+
+
+
+

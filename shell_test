@@ -1,0 +1,43 @@
+#!/bin/bash
+ 
+string='/home/basit/basit_workspace/gitlab_repos/DataGen/'
+if [[ $PATH == *"$string"* ]]; then
+    echo "Already in path: $string"
+else
+    echo "Not in path: $string"
+    echo "Adding in path: $string"
+    export PATH=$PATH:/home/basit/basit_workspace/gitlab_repos/DataGen/
+fi
+ 
+cd /home/basit/basit_workspace/gitlab_repos/fpga-driver-software/components/c_model/Chip-Software/code
+ 
+autoreconf
+./configure --enable-systemc
+ 
+
+cd /home/basit/basit_workspace/gitlab_repos/fpga-driver-software/components/c_model/Chip-Software/code/c-model/unittests/ovs/
+make clean
+make -j88
+ 
+cd /home/basit/basit_workspace/gitlab_repos/fpga-driver-software/components/c_model/Chip-Software/code
+make clean
+make -j88
+ 
+# cd /home/basit/basit_workspace/gitlab_repos/fpga-driver-software/components/c_model/Chip-Software/code/c-model/unittests
+ 
+./c-model/unittests/func_cmodel
+# ./c-model/unittests/func_systemc_model%   
+
+
+
+
+! /usr/bin/bash
+var =$((1))
+echo $var > /sys/class/net/enp4s0f0/device/sriov_numvfs
+
+echo 0000:04:00.2 > /sys/bus/pci/drivers/mlx5_core/unbind
+
+devlink dev eswitch set pci/0000:04:00.0 mode switchdev
+
+echo 0000:04:00.2 > /sys/bus/pci/drivers/mlx5_core/bind
+
